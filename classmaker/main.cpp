@@ -6,7 +6,7 @@
 
 extern int run(int argc,char ** argv);
 
-int main(int argc,char ** argv) try{
+int main(int argc,char ** argv) try {
 #if defined(QT_CORE_LIB)
     QCoreApplication app(argc,argv);
 #endif

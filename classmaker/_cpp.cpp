@@ -78,7 +78,8 @@ void write_cpp(
     if (class_name.empty()) { return; }
     std::string file(_cpp);
     if (class_name=="TestA"s) {
-        out<<file;return;}
+        out<<file; return;
+    }
 
     auto find_pos=file.find("TestA"s);
     while (find_pos!=std::string::npos) {

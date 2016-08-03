@@ -9,13 +9,10 @@
 #include <QMainWindow>
 
 class _MainWindowPrivate;
-class MainWindow : public QMainWindow
-{
+class MainWindow : public QMainWindow {
     Q_OBJECT
-MACRO_PROTECTED:
-    _MainWindowPrivate * thisp_=nullptr;
 public:
-    MainWindow(QWidget *parent = 0);
+    MainWindow(QWidget *parent=0);
     ~MainWindow();
 
     const QString & getClassName()const;
@@ -27,8 +24,10 @@ public:
     void setValueName(QString && v);
     void setValueType(QString &&);
     void setValueType(const QString &);
-public slots:
-    void updateValue();
+public:
+    Q_SLOT void updateValue();
+MACRO_PROTECTED:
+    _MainWindowPrivate * thisp_=nullptr;
 };
 
 #endif // MAINWINDOW_HPP

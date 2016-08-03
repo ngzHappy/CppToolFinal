@@ -29,8 +29,8 @@ char toUpper(char i) {
 
 int run(int argc,char ** argv) {
     using ofstream=std::ofstream;
-    constexpr const char bom_[]{char(0xef),char(0xbb),char(0xbf)};
-    if (argc==1) { 
+    constexpr const char bom_[]{ char(0xef),char(0xbb),char(0xbf) };
+    if (argc==1) {
         std::cout<<"you should input class name:"<<std::endl;
         return -1;
     }
@@ -45,7 +45,7 @@ int run(int argc,char ** argv) {
         outDirPath=QDir::currentPath().toLocal8Bit().toStdString();
     }
 
-    do{
+    do {
         if (outDirPath.size()<=0) { return -99; }
         if (*outDirPath.rbegin()=='/') { break; }
         if (*outDirPath.rbegin()=='\\') { break; }
@@ -53,7 +53,7 @@ int run(int argc,char ** argv) {
     } while (false);
 
     std::string UClassName=className;
-    for (auto &i:UClassName) {i=toUpper(i);}
+    for (auto &i:UClassName) { i=toUpper(i); }
 
     std::string path=outDirPath;
     QDir dir;

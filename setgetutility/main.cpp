@@ -2,12 +2,11 @@
 #include <QApplication>
 #include <QtGui/qimage.h>
 
-int main(int argc, char *argv[])
-{
-    QApplication app(argc, argv);
+int main(int argc,char *argv[]) {
+    QApplication app(argc,argv);
 
     {
-        QImage * image = new QImage("null.png");
+        QImage * image=new QImage("null.png");
         delete image;
     }
 
