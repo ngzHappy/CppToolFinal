@@ -10,11 +10,11 @@ const char * _cpp=u8R"=!!=(/*TestA cpp*/
 /*zone_namespace_begin*/
 template<>
 inline auto getThisData<zone_data::TestAData *,0>(const TestA * arg) ->zone_data::TestAData *{
-    return const_cast<TestA *>(arg)->thisData(); 
+    return const_cast<TestA *>(arg)->thisData();
 }
 
 template<>
-inline auto getThisData<const zone_data::TestAData *,1>(const TestA * arg) ->const zone_data::TestAData *{ 
+inline auto getThisData<const zone_data::TestAData *,1>(const TestA * arg) ->const zone_data::TestAData *{
     return arg->thisData();
 }
 
@@ -29,7 +29,7 @@ namespace zone_data {
 /********************************zone_data********************************/
 TestAData::TestAData() {
     static_assert(
-        has_virtual_destructor<TestAData>::value,
+        std::has_virtual_destructor<TestAData>::value,
         "the class must has virtual destructor");
 }
 
@@ -58,7 +58,7 @@ TestA::TestA(ThisDataType && _arg_):
 }
 
 auto TestA::thisData()->zone_data::TestAData *{
-    return static_cast<zone_data::TestAData *>(thisData_.get()); 
+    return static_cast<zone_data::TestAData *>(thisData_.get());
 }
 
 auto TestA::thisData() const->const zone_data::TestAData *{

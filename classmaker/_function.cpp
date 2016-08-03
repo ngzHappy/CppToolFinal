@@ -7,6 +7,7 @@ const static char * _function=u8R"=!!=(/*TestA hpp*/
 #define ____PRAGMA_ONCE_HPP_TESTA_FUNCTION__() 1
 
 #include "TestAData.hpp"
+#include <type_traits>
 
 /*zone_namespace_begin*/
 class TestA;

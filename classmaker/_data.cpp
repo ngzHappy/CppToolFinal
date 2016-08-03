@@ -7,6 +7,7 @@ const static char * _hpp=u8R"=!!=(/*TestA hpp*/
 #define ____PRAGMA_ONCE_HPP_DATA_TESTA_0x00() 1
 
 #include <memory>
+#include <type_traits>
 
 /*zone_namespace_begin*/
 
