@@ -14,9 +14,16 @@ TEMPLATE = subdirs
 
 appEmpertyTest.file=$$PWD/empertyTest/empertyTest.pro
 
+appSetGetUtility.file=$$PWD/setgetutility/setgetutility.pro
+appSetGetUtility.depends+=appEmpertyTest
+
+appClassMaker.file=$$PWD/classmaker/classmaker.pro
+appClassMaker.depends+=appEmpertyTest
 
 SUBDIRS += \
-    appEmpertyTest
+    appEmpertyTest \
+    appSetGetUtility \
+    appClassMaker
 
 
 

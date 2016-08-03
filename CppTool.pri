@@ -22,4 +22,8 @@ win32-msvc*{
     }
 }
 
+!win32 {
+    QMAKE_LFLAGS += -Wl,-rpath .
+}
+
 
