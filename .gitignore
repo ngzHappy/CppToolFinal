@@ -1,0 +1,9 @@
+*.user
+*.exe
+*.lib
+*.dll
+*.autosave
+*.stackdump
+binlib/*
+
+
