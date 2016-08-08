@@ -1,4 +1,4 @@
-#include <array>
+﻿#include <array>
 #include <memory>
 #include "Memory.hpp"
 
@@ -25,7 +25,7 @@ class MallocFreeType {
 public:
     static void * malloc(std::size_t arg) {
         auto var=reinterpret_cast<FreeFunctionItem *>(
-            std::malloc(arg+sizeof(FreeFunctionItem)));
+                    std::malloc(arg+sizeof(FreeFunctionItem)));
         var->data=&std::free;
         return reinterpret_cast<char *>(var)+sizeof(FreeFunctionItem);
     }
@@ -41,12 +41,18 @@ public:
 };
 
 typedef __pool_type pool_type_private;
+static char __pools_value[sizeof(std::array<pool_type_private,MaxQuickMallocFree>)];
 inline std::array<pool_type_private,MaxQuickMallocFree> &memory_pools() {
     enum { __size=sizeof(FreeFunctionItem) };
     /*do not need delete*/
-    static auto * varAns=new std::array<pool_type_private,MaxQuickMallocFree>{
+    static auto* varAns=[]() {
+        auto var=reinterpret_cast<pool_type_private*>(static_cast<char *>(__pools_value));
+        {
+            auto varI=var;
 #include"memory_private/Memory.pool.hpp"
-    };
+        }
+        return reinterpret_cast<std::array<pool_type_private,MaxQuickMallocFree>*>(var);
+    }();
     return *varAns;
 }
 
@@ -73,7 +79,7 @@ class __MallocFreeType {
 public:
     static void * malloc() {
         auto var=reinterpret_cast<FreeFunctionItem *>(
-            instance().malloc(/*_Value_+sizeof(FreeFunctionItem)*/));
+                    instance().malloc(/*_Value_+sizeof(FreeFunctionItem)*/));
         var->data=&MallocFreeType<_Value_>::free;
         return reinterpret_cast<char *>(var)+sizeof(FreeFunctionItem);
     }

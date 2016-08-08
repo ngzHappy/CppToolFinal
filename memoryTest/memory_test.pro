@@ -6,7 +6,8 @@ TEMPLATE = app
 
 
 SOURCES += \
-    Memory.cpp
+    Memory.cpp \
+    main.cpp
 
 HEADERS  += \
     Memory.hpp \
