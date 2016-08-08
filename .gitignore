@@ -5,5 +5,4 @@
 *.autosave
 *.stackdump
 binlib/*
-
-
+memoryTest/memory_private/boost/*
