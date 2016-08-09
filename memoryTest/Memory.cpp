@@ -41,12 +41,16 @@ public:
 };
 
 typedef __pool_type pool_type_private;
-static char __pools_value[sizeof(std::array<pool_type_private,MaxQuickMallocFree>)];
+inline static char * __pools_value(){
+    static char _d_pools_value[sizeof(std::array<pool_type_private,MaxQuickMallocFree>)];
+    return static_cast<char*>(_d_pools_value);
+}
+
 inline std::array<pool_type_private,MaxQuickMallocFree> &memory_pools() {
     enum { __size=sizeof(FreeFunctionItem) };
     /*do not need delete*/
     static auto* varAns=[]() {
-        auto var=reinterpret_cast<pool_type_private*>(static_cast<char *>(__pools_value));
+        auto var=reinterpret_cast<pool_type_private*>(__pools_value());
         {
             auto varI=var;
 #include"memory_private/Memory.pool.hpp"
