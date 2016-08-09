@@ -1,4 +1,7 @@
-﻿#include <array>
+﻿/*
+ * 此文件是为应用程序开发，如果是热拔插的插件则会出现内存泄露
+*/
+#include <array>
 #include <memory>
 #include "Memory.hpp"
 
