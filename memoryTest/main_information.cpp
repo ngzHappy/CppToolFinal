@@ -1,19 +1,22 @@
 
 #include<cassert>
+#ifndef _APP_MAIN_IMPORT
+#define _APP_MAIN_IMPORT
+#endif
 namespace app_main {
 
-int argc();
-char ** argv();
-bool is_main_entered();
-bool is_main_exited();
+_APP_MAIN_IMPORT int argc();
+_APP_MAIN_IMPORT char ** argv();
+_APP_MAIN_IMPORT bool is_main_entered();
+_APP_MAIN_IMPORT bool is_main_exited();
 
-class main {
+class _APP_MAIN_IMPORT main {
     static void set_main_argc(int);
     static void set_main_argv(char**);
     static void set_main_entered();
     static void set_main_exited();
 public:
-    main(int argc,char** argv) {
+    main(int argc=0,char** argv=nullptr) {
         /*the class just init once*/
         assert((is_main_entered()==false)&&(is_main_exited()==false));
         set_main_argc(argc);
@@ -56,6 +59,9 @@ bool is_main_exited() { return app_main_data::is_main_exited.load(); }
 
 
 
-int main() {
-
+int main(int argc,char **argv) {
+    app_main::main app(argc,argv);
+    app_main::is_main_entered();
+    app_main::is_main_exited();
+    (void)app;
 }
