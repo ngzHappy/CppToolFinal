@@ -13,7 +13,86 @@ public:
 #include<iostream>
 #include<fstream>
 
+#include<algorithm>
+#include<random>
+
+#include<chrono>
+
+constexpr const std::size_t test_size=50240;
+inline std::size_t (&test_index())[test_size] {
+    static std::size_t test_data[test_size];
+
+    std::random_device dev;
+    std::default_random_engine engine{ dev() };
+    std::uniform_int_distribution<> u(1,1024*30);  
+
+    for (auto & i:test_data) {
+        i=u(engine);
+    }
+
+    std::random_shuffle(test_data,test_data+test_size);
+    return test_data;
+}
+
 int main(){
+
+    auto & index_=test_index();
+
+    {
+        auto begin_=std::chrono::high_resolution_clock::now();
+        for (auto i:index_) {
+            std::free(std::malloc(i));
+        }
+        auto end_=std::chrono::high_resolution_clock::now();
+
+        std::cout<< std::chrono::duration_cast<
+            std::chrono::duration<double,
+            std::chrono::seconds::period>> (end_-begin_).count()
+            <<std::endl;
+    }
+
+    {
+        auto begin_=std::chrono::high_resolution_clock::now();
+        for (auto i:index_) {
+            memory::free(memory::malloc(i));
+        }
+        auto end_=std::chrono::high_resolution_clock::now();
+
+        std::cout<< std::chrono::duration_cast<
+            std::chrono::duration<double,
+            std::chrono::seconds::period>> (end_-begin_).count()
+            <<std::endl;
+    }
+
+    for (int n=0; n<100; ++n) {
+        std::cout<<"------------------------"<<std::endl;
+
+        {
+            auto begin_=std::chrono::high_resolution_clock::now();
+            for (auto i:index_) {
+                std::free(std::malloc(i));
+            }
+            auto end_=std::chrono::high_resolution_clock::now();
+
+            std::cout<<std::chrono::duration_cast<
+                std::chrono::duration<double,
+                std::chrono::seconds::period>> (end_-begin_).count()
+                <<std::endl;
+        }
+
+        {
+            auto begin_=std::chrono::high_resolution_clock::now();
+            for (auto i:index_) {
+                memory::free(memory::malloc(i));
+            }
+            auto end_=std::chrono::high_resolution_clock::now();
+
+            std::cout<<std::chrono::duration_cast<
+                std::chrono::duration<double,
+                std::chrono::seconds::period>> (end_-begin_).count()
+                <<std::endl;
+        }
+    }
 
     {
         std::ofstream ofs("ask.txt");
