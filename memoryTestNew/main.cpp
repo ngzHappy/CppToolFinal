@@ -1,4 +1,14 @@
 ﻿#include "Memory.hpp"
+#include<list>
+#include"Allocator.hpp"
+//#include <allocator>
+
+class Test {
+    int value=12;
+public:
+    Test() {}
+    ~Test(){}
+};
 
 int main(){
 
@@ -6,6 +16,19 @@ int main(){
     *data_=123;
     memory::free( data_ );
     memory::freePoolMemory();
+
+    {
+        std::list< Test,memory::Allocator<int> > test;
+
+        test.resize(12);
+        test.push_back({});
+        test.push_back({});
+        test.push_back({});
+        test.push_back({});
+        test.push_back({});
+        test.push_back({});
+    }
+
 }
 
 
