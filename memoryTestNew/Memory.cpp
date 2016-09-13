@@ -31,24 +31,6 @@ public:
     FreeFunctionType freeFunction;
 };
 
-/*0->1*/
-template<std::size_t N>
-void * atPoolMalloc() {
-    auto * pool=reinterpret_cast<pool_type*>(
-        const_cast<char *>(pool_plain_data))+N;
-    auto * ans=reinterpret_cast<DataItemType*>(pool->malloc());
-#if defined(_TEST_MEMORY_MALLOC_FREE_)
-    ofs<<pool->get_requested_size()<<std::endl;
-#endif
-    if (ans==nullptr) { return nullptr; }
-    ans->freeFunction=[](void * arg) {
-        auto * pool=reinterpret_cast<pool_type*>(
-            const_cast<char *>(pool_plain_data))+N;
-        pool->free(arg);
-    };
-    return ++ans;
-}
-
 /*gen small data space*/
 static char pool_plain_data[sizeof(pool_type)*small_malloc_size];
 static PoolMallocFunctionType pool_malloc_functions[1+small_malloc_size];
@@ -133,6 +115,24 @@ std::atomic_bool Middle::is_pool_construct;
 char Middle::pool_plain_data[middle_malloc_size*sizeof(pool_type)];
 PoolMallocFunctionType Middle::pool_malloc_functions[1+middle_malloc_size];
 
+/*0->1*/
+template<std::size_t N>
+void * atPoolMalloc() {
+    auto * pool=reinterpret_cast<pool_type*>(
+        const_cast<char *>(pool_plain_data))+N;
+    auto * ans=reinterpret_cast<DataItemType*>(pool->malloc());
+#if defined(_TEST_MEMORY_MALLOC_FREE_)
+    ofs<<pool->get_requested_size()<<std::endl;
+#endif
+    if (ans==nullptr) { return nullptr; }
+    ans->freeFunction=[](void * arg) {
+        auto * pool=reinterpret_cast<pool_type*>(
+            const_cast<char *>(pool_plain_data))+N;
+        pool->free(arg);
+    };
+    return ++ans;
+}
+
 void Middle::constructPools() {
     {/*初始化内存池*/
         auto * begin=reinterpret_cast<pool_type*>(
@@ -149,7 +149,12 @@ void Middle::constructPools() {
 }
 
 void Middle::destructPools() {
-
+    char * tmp=const_cast<char *>(pool_plain_data);
+    auto * begin=reinterpret_cast<pool_type*>(tmp);
+    auto * end=begin+middle_malloc_size;
+    for(;begin!=end;++begin){
+        begin->~pool();
+    }
 }
 
 template<typename >
@@ -171,7 +176,7 @@ public:
     }
 };
 
-/*the module is use for application so do not need destruct*/
+/*the moudle is use for application so do not need destruct*/
 /*
 void destructPools(){
     char * tmp=const_cast<char *>(pool_plain_data);
@@ -204,7 +209,7 @@ void * malloc(std::size_t arg) {
     if (arg>small_malloc_size) {
         auto arg_add_4=arg+sizeof(DataItemType);
         if ((arg>max_middle_malloc_size)||((arg_add_4)>max_middle_malloc_size)) {
-            /*大对象!!there may be a bug 
+            /*大对象!!there may be a bug
             @ arg+sizeof(DataItemType) may be bigger than int_max*/
             auto * ans=reinterpret_cast<DataItemType*>(std::malloc(arg_add_4));
             if (ans==nullptr) { return nullptr; }
