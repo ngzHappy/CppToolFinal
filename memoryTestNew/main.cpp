@@ -18,7 +18,7 @@ public:
 
 #include<chrono>
 
-constexpr const std::size_t test_size=1050240;
+constexpr const std::size_t test_size=1950240;
 inline std::size_t (&test_index())[test_size] {
     static std::size_t test_data[test_size];
 
@@ -75,7 +75,7 @@ int main(){
             <<std::endl;
     }
 
-    for (int n=0; n<100; ++n) {
+    for (int n=0; n<1 ; ++n) {
         std::cout<<"------------------------"<<std::endl;
 
         {
@@ -123,6 +123,45 @@ int main(){
             double * data_=reinterpret_cast<double*>(memory::malloc(i));
             ofs<<i<<std::endl;
             memory::free(data_);
+        }
+
+    }
+
+    {
+        std::cout<<"~~~~~~~"<<std::endl;
+        constexpr std::size_t size_test=90240;
+        static void * test_ans[size_test];
+
+        {
+            auto begin_=std::chrono::high_resolution_clock::now();
+            for (int i=0; i<size_test; ++i) {
+                test_ans[i]=std::malloc(12);
+            }
+            for (int i=0; i<size_test; ++i) {
+                std::free(test_ans[i]);
+            }
+            auto end_=std::chrono::high_resolution_clock::now();
+
+            std::cout<<std::chrono::duration_cast<
+                std::chrono::duration<double,
+                std::chrono::seconds::period>> (end_-begin_).count()
+                <<std::endl;
+        }
+
+        {
+            auto begin_=std::chrono::high_resolution_clock::now();
+            for (int i=0; i<size_test; ++i) {
+                test_ans[i]=memory::malloc(12);
+            }
+            for (int i=0; i<size_test; ++i) {
+                memory::free(test_ans[i]);
+            }
+            auto end_=std::chrono::high_resolution_clock::now();
+
+            std::cout<<std::chrono::duration_cast<
+                std::chrono::duration<double,
+                std::chrono::seconds::period>> (end_-begin_).count()
+                <<std::endl;
         }
 
     }
