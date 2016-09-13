@@ -10,12 +10,35 @@ public:
     ~Test(){}
 };
 
+#include<iostream>
+
+
 int main(){
 
-    double * data_=reinterpret_cast<double*>(memory::malloc(512));
-    *data_=123;
-    memory::free( data_ );
-    memory::freePoolMemory();
+
+    for (int i=0; i<(1024*4);++i) {
+        double * data_=reinterpret_cast<double*>(memory::malloc(i));
+        memory::free(data_);
+    }
+
+    for (int i=(1024*4); i<(1024*32);++i) {
+        double * data_=reinterpret_cast<double*>(memory::malloc(i));
+        memory::free(data_);
+    }
+
+    {
+        double * data_=reinterpret_cast<double*>(memory::malloc(512));
+        *data_=123;
+        memory::free(data_);
+        memory::freePoolMemory();
+    }
+
+    {
+        double * data_=reinterpret_cast<double*>(memory::malloc(1024*32-16));
+        *data_=123;
+        memory::free(data_);
+        memory::freePoolMemory();
+    }
 
     {
         std::list< Test,memory::Allocator<int> > test;
