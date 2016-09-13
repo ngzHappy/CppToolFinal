@@ -23,11 +23,16 @@ appClassMaker.depends+=appEmpertyTest
 appMemoryTest.file=$$PWD/memoryTest/memory_test.pro
 appMemoryTest.depends+=appEmpertyTest
 
+appMemoryTestNew.file=$$PWD/memoryTestNew/memoryTestNew.pro
+appMemoryTestNew.depends+=appEmpertyTest
+
 SUBDIRS += \
     appEmpertyTest \
     appSetGetUtility \
     appClassMaker \
-    appMemoryTest
+    appMemoryTest \
+    appMemoryTestNew
+
 
 
 
