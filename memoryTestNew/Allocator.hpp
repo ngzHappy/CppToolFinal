@@ -1,4 +1,4 @@
-#ifndef _MEMORY_ALLOCATOR_HPP_NEW_
+﻿#ifndef _MEMORY_ALLOCATOR_HPP_NEW_
 #define _MEMORY_ALLOCATOR_HPP_NEW_() 1
 
 #include "Memory.hpp"
@@ -83,6 +83,8 @@ public:
     using S::destroy;
     using S::construct;
     using S::max_size;
+    using S::address;
+
 };
 
 template<>
@@ -98,7 +100,8 @@ public:
     ~Allocator()=default;
 
     template<class _Other>
-    struct rebind {
+    class rebind {
+    public:
         typedef Allocator<_Other> other;
     };
 
@@ -113,6 +116,18 @@ public:
     Allocator&operator=(Allocator<U>&&) {/*do nothing*/return *this; }
 
 };
+
+template<typename T,typename U>
+constexpr inline bool operator==(const Allocator<T>&,const Allocator<U>&){return false;}
+
+template<typename T,typename U>
+constexpr inline bool operator!=(const Allocator<T>&,const Allocator<U>&){return true;}
+
+template<typename T>
+constexpr inline bool operator==(const Allocator<T>&,const Allocator<T>&){return true;}
+
+template<typename T>
+constexpr inline bool operator!=(const Allocator<T>&,const Allocator<T>&){return false;}
 
 }
 

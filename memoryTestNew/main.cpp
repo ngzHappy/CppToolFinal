@@ -29,6 +29,10 @@ int main(){
         test.push_back({});
     }
 
+    memory::Allocator<int> a;
+    memory::Allocator<double> b;
+    a==b;
+
 }
 
 
