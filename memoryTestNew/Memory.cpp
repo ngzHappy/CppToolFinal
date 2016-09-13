@@ -14,13 +14,19 @@ namespace __private {
 namespace __memory {
 namespace memory {
 
+namespace middle {
+constexpr const std::size_t step=32;
+constexpr const std::size_t step_sub_1=31;
+constexpr const std::size_t step_exp=5;
+}
+
 /*
 (use -ftemplate-depth= to increase the maximum)
 Qt:QMAKE_CXXFLAGS += -ftemplate-depth=4100
 */
 constexpr const std::size_t small_malloc_size=1024*4;
 constexpr const std::size_t max_middle_malloc_size=1024*32;
-constexpr const std::size_t middle_malloc_size=(max_middle_malloc_size-small_malloc_size)/128;
+constexpr const std::size_t middle_malloc_size=(max_middle_malloc_size-small_malloc_size)/middle::step;
 typedef std::make_index_sequence<small_malloc_size> index_sequence_type;
 typedef void(*FreeFunctionType)(void *);
 typedef void*(*PoolMallocFunctionType)(void);
@@ -138,7 +144,7 @@ void Middle::constructPools() {
         auto * begin=reinterpret_cast<pool_type*>(
             const_cast<char *>(pool_plain_data));
         for (std::size_t i=0; i<middle_malloc_size; ++i) {
-            const auto item_size=i*128+(small_malloc_size+128);
+            const auto item_size=i*middle::step+(small_malloc_size+middle::step);
             new(begin) pool_type{ item_size };
             ++begin;
         }
@@ -219,8 +225,8 @@ void * malloc(std::size_t arg) {
         else {
             /*中对象*/
             arg_add_4-=small_malloc_size;
-            auto quot=arg_add_4>>7;/*arg_add_4/128;*/
-            quot+=((arg_add_4&127)>0);
+            auto quot=arg_add_4>>middle::step_exp;/*arg_add_4/middle::step;*/
+            quot+=((arg_add_4&middle::step_sub_1)>0);
             return Middle::malloc(quot);
         }
     }
