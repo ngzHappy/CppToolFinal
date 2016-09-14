@@ -52,15 +52,16 @@ inline std::size_t(&test_index())[test_size] {
 int main() {
 
     {
-        int a={}; 
-        double b={}; 
+        int a={};
+        double b={};
         float c={};
 
-        int a1={}; 
-        double b1={}; 
+        int a1={};
+        double b1={};
         float c1={};
 
-        auto f= memory::make_function<double()>([a,b,c,a1,b1,c1]() {
+        auto f= memory::make_function<double(void)>(
+                    [a,b,c,a1,b1,c1]()->double {
             auto x=a+b+c+a1+b1+c1;
             return x;
         });
@@ -77,12 +78,12 @@ int main() {
         enum TTX {
             x=sizeof(Test)
         };
-    }    
+    }
 
     {
         memory::make_shared<const int>();
         memory::instance_shared<const double>(34.2);
-    } 
+    }
 
     {
         using String=std::basic_string<

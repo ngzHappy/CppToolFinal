@@ -17,8 +17,8 @@ HEADERS  += \
     Memory.hpp \
     Allocator.hpp \
     MemoryStatic.hpp \
-    MakeShared.hpp \
-    MakeFunction.hpp
+    MakeShared.hpp
+
 INCLUDEPATH += $$PWD/memory_private
 
 include($$PWD/../CppTool.pri)
