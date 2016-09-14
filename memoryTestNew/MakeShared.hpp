@@ -11,6 +11,8 @@ std::shared_ptr<_m_T_> make_shared(_m_Args_ &&...args) {
     using _T_=std::remove_cv_t<_m_T_>;
     using __T_=std::aligned_storage_t<sizeof(_T_),alignof(_T_)>;
     try {
+        memory::Allocator< std::shared_ptr<_m_T_> > _m_alloc_{};
+
         auto * _tmp_=memory::malloc(sizeof(__T_));
         if (_tmp_==nullptr) { return{}; }
 
@@ -25,7 +27,7 @@ std::shared_ptr<_m_T_> make_shared(_m_Args_ &&...args) {
         return std::shared_ptr<_m_T_>(
             reinterpret_cast<_T_ *>(_tmp_),
             [](_m_T_ * arg) {arg->~_T_(); memory::free(arg); },
-            memory::Allocator< std::shared_ptr<_m_T_> >{});
+            std::move(_m_alloc_));
 
     }
     catch (...) {
@@ -39,6 +41,8 @@ std::shared_ptr<_m_T_> instance_shared(_m_Args_ &&...args) {
     using _T_=std::remove_cv_t<_m_T_>;
     using __T_=std::aligned_storage_t<sizeof(_T_),alignof(_T_)>;
     try {
+        memory::Allocator< std::shared_ptr<_m_T_> > _m_alloc_{};
+
         auto * _tmp_=memory::malloc(sizeof(__T_));
         if (_tmp_==nullptr) { return{}; }
 
@@ -53,7 +57,7 @@ std::shared_ptr<_m_T_> instance_shared(_m_Args_ &&...args) {
         return std::shared_ptr<_m_T_>(
             reinterpret_cast<_T_ *>(_tmp_),
             [](_m_T_ * arg) {arg->~_T_(); memory::free(arg); },
-            memory::Allocator< std::shared_ptr<_m_T_> >{});
+            std::move(_m_alloc_));
 
     }
     catch (...) {
