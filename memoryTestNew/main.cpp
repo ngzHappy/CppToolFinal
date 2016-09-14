@@ -48,24 +48,19 @@ inline std::size_t(&test_index())[test_size] {
 #include<string>
 
 #include"MakeShared.hpp"
-#include "MakeFunction.hpp"
+
+#include"MakeFunction.hpp"
+
 int main() {
-
+      
     {
-        int a={};
-        double b={};
-        float c={};
-
-        int a1={};
-        double b1={};
-        float c1={};
-
-        auto f= memory::make_function<double(void)>(
-                    [a,b,c,a1,b1,c1]()->double {
-            auto x=a+b+c+a1+b1+c1;
-            return x;
-        });
-        f();
+        int a1=1;
+        double b1=2;
+        float c1=3;
+        int a=1;
+        double b=2;
+        float c=3;
+        memory::make_function<void()>([a1,b1,c1,a,b,c]() {});
     }
 
     {

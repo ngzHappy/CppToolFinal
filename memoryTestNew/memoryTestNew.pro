@@ -17,7 +17,8 @@ HEADERS  += \
     Memory.hpp \
     Allocator.hpp \
     MemoryStatic.hpp \
-    MakeShared.hpp
+    MakeShared.hpp \
+    MakeFunction.hpp
 
 INCLUDEPATH += $$PWD/memory_private
 
