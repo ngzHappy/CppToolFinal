@@ -8,9 +8,8 @@
 namespace memory {
 
 template<typename T>
-class Allocator :private std::allocator<T> {
+class Allocator {
     typedef T _Ty;
-    typedef std::allocator<T> S;
 public:
 
     static_assert(!std::is_const<_Ty>::value,
@@ -80,17 +79,39 @@ public:
         return _do_allocate(arg);
     }
 
-    using S::destroy;
-    using S::construct;
-    using S::max_size;
-    using S::address;
+    template<typename _Objty,
+        typename... _Types>
+        void construct(_Objty *_Ptr,_Types&&... _Args) {
+        ::new ((void *)_Ptr) _Objty(std::forward<_Types>(_Args)...);
+    }
+
+    template<typename _U_>
+    void destroy(_U_ *arg) { arg->~_U_(); return; (void)arg; }
+
+    size_t max_size() const noexcept(true) {
+        return ((size_t)(-1)/sizeof(_Ty));
+    }
+
+    pointer address(reference _Val) const noexcept(true) {
+        return (std::addressof(_Val));
+    }
+
+    const_pointer address(const_reference _Val) const noexcept(true) {
+        return (std::addressof(_Val));
+    }
 
 };
 
+std::allocator<int> sdfsdfe;
+
 template<>
-class Allocator<void> :
-    public std::allocator<void> {
+class Allocator<void> {
 public:
+
+    typedef void _Not_user_specialized;
+    typedef void value_type;
+    typedef void *pointer;
+    typedef const void *const_pointer;
 
     Allocator()=default;
     Allocator(const Allocator&)=default;
@@ -118,16 +139,16 @@ public:
 };
 
 template<typename T,typename U>
-constexpr inline bool operator==(const Allocator<T>&,const Allocator<U>&){return false;}
+constexpr inline bool operator==(const Allocator<T>&,const Allocator<U>&) { return false; }
 
 template<typename T,typename U>
-constexpr inline bool operator!=(const Allocator<T>&,const Allocator<U>&){return true;}
+constexpr inline bool operator!=(const Allocator<T>&,const Allocator<U>&) { return true; }
 
 template<typename T>
-constexpr inline bool operator==(const Allocator<T>&,const Allocator<T>&){return true;}
+constexpr inline bool operator==(const Allocator<T>&,const Allocator<T>&) { return true; }
 
 template<typename T>
-constexpr inline bool operator!=(const Allocator<T>&,const Allocator<T>&){return false;}
+constexpr inline bool operator!=(const Allocator<T>&,const Allocator<T>&) { return false; }
 
 }
 

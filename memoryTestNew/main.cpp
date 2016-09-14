@@ -7,7 +7,7 @@ class Test {
     int value=12;
 public:
     Test() {}
-    ~Test(){}
+    ~Test() {}
 };
 
 #include<iostream>
@@ -19,7 +19,8 @@ public:
 #include<chrono>
 
 constexpr const std::size_t test_size=1950240;
-inline std::size_t (&test_index())[test_size] {
+
+inline std::size_t(&test_index())[test_size] {
     static std::size_t test_data[test_size];
 
     std::random_device dev;
@@ -39,7 +40,27 @@ inline std::size_t (&test_index())[test_size] {
 //    return test_data;
 //}
 
-int main(){
+#include<scoped_allocator>
+#include<vector>
+#include<string>
+
+int main() {
+
+    {
+        using String=std::basic_string<
+            char,
+            std::char_traits<char>,
+            memory::Allocator<char>
+        >;
+
+        using T=std::scoped_allocator_adaptor<
+            memory::Allocator<String>
+        >;
+
+        std::vector< String,T > v;
+        v.push_back("123");
+        v.push_back("456");
+    }
 
     auto & index_=test_index();
 
@@ -53,7 +74,7 @@ int main(){
         std::free(tmp_data);
         auto end_=std::chrono::high_resolution_clock::now();
 
-        std::cout<< std::chrono::duration_cast<
+        std::cout<<std::chrono::duration_cast<
             std::chrono::duration<double,
             std::chrono::seconds::period>> (end_-begin_).count()
             <<std::endl;
@@ -69,13 +90,13 @@ int main(){
         memory::free(tmp_data);
         auto end_=std::chrono::high_resolution_clock::now();
 
-        std::cout<< std::chrono::duration_cast<
+        std::cout<<std::chrono::duration_cast<
             std::chrono::duration<double,
             std::chrono::seconds::period>> (end_-begin_).count()
             <<std::endl;
     }
 
-    for (int n=0; n<1 ; ++n) {
+    for (int n=0; n<1; ++n) {
         std::cout<<"------------------------"<<std::endl;
 
         {
@@ -88,7 +109,7 @@ int main(){
             std::free(tmp_data);
             auto end_=std::chrono::high_resolution_clock::now();
 
-            std::cout<< std::chrono::duration_cast<
+            std::cout<<std::chrono::duration_cast<
                 std::chrono::duration<double,
                 std::chrono::seconds::period>> (end_-begin_).count()
                 <<std::endl;
@@ -104,7 +125,7 @@ int main(){
             memory::free(tmp_data);
             auto end_=std::chrono::high_resolution_clock::now();
 
-            std::cout<< std::chrono::duration_cast<
+            std::cout<<std::chrono::duration_cast<
                 std::chrono::duration<double,
                 std::chrono::seconds::period>> (end_-begin_).count()
                 <<std::endl;
@@ -129,15 +150,15 @@ int main(){
 
     {
         std::cout<<"~~~~~~~"<<std::endl;
-        constexpr std::size_t size_test=90240;
+        constexpr std::size_t size_test=590240;
         static void * test_ans[size_test];
 
         {
             auto begin_=std::chrono::high_resolution_clock::now();
-            for (int i=0; i<size_test; ++i) {
+            for (std::size_t i=0; i<size_test; ++i) {
                 test_ans[i]=std::malloc(12);
             }
-            for (int i=0; i<size_test; ++i) {
+            for (std::size_t i=0; i<size_test; ++i) {
                 std::free(test_ans[i]);
             }
             auto end_=std::chrono::high_resolution_clock::now();
@@ -150,10 +171,10 @@ int main(){
 
         {
             auto begin_=std::chrono::high_resolution_clock::now();
-            for (int i=0; i<size_test; ++i) {
+            for (std::size_t i=0; i<size_test; ++i) {
                 test_ans[i]=memory::malloc(12);
             }
-            for (int i=0; i<size_test; ++i) {
+            for (std::size_t i=0; i<size_test; ++i) {
                 memory::free(test_ans[i]);
             }
             auto end_=std::chrono::high_resolution_clock::now();
