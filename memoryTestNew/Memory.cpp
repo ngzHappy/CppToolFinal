@@ -305,10 +305,23 @@ void __memory__construct_static::__set_construct_static() noexcept(true) {
 }
 
 bool __memory__construct_static::__run_once(void(*arg)(void)) noexcept(true) {
+    if (arg==nullptr) { return false; }
     /*it will not be deleted*/
     static auto * _d_run_once_flag=new std::once_flag;
     try {
-        std::call_once(*_d_run_once_flag,arg);
+
+        const auto call_funcs=[](void(*fun)(void)) {
+            /*初始化malloc free函数*/
+            memory::free(memory::malloc(sizeof(double)));
+            memory::free(memory::malloc(
+                __cpp::__private::__memory::memory::small_malloc_size
+                +sizeof(double)
+            ));
+            /*执行用户自定义函数*/
+            fun();
+        };
+
+        std::call_once(*_d_run_once_flag,call_funcs,arg);
     }
     catch (...) {
         /*do nothing*/
