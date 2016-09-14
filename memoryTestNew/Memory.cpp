@@ -27,6 +27,7 @@ Qt:QMAKE_CXXFLAGS += -ftemplate-depth=4100
 constexpr const std::size_t small_malloc_size=1024*4;
 constexpr const std::size_t max_middle_malloc_size=1024*32;
 constexpr const std::size_t middle_malloc_size=(max_middle_malloc_size-small_malloc_size)/middle::step;
+std::atomic_bool _d_is_construct_static;
 typedef std::make_index_sequence<small_malloc_size> index_sequence_type;
 typedef void(*FreeFunctionType)(void *);
 typedef void*(*PoolMallocFunctionType)(void);
@@ -291,6 +292,14 @@ void free(void *arg) {
 
 void freePoolMemory() {
     return __cpp::__private::__memory::memory::freePoolMemory();
+}
+
+bool __is_construct_static() { 
+    return __cpp::__private::__memory::memory::_d_is_construct_static.load();
+}
+
+void __set_construct_static() {
+    return __cpp::__private::__memory::memory::_d_is_construct_static.store(true);
 }
 
 }/*memory*/

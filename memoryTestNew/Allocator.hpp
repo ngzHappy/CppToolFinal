@@ -1,5 +1,5 @@
-﻿#ifndef _MEMORY_ALLOCATOR_HPP_NEW_
-#define _MEMORY_ALLOCATOR_HPP_NEW_() 1
+﻿#ifndef _m_MEMORY_ALLOCATOR_HPP_NEW_
+#define _m_MEMORY_ALLOCATOR_HPP_NEW_() 1
 
 #include "Memory.hpp"
 #include <exception>
@@ -17,18 +17,13 @@ public:
         "because allocator<const T> is ill-formed.");
 
     typedef void _Not_user_specialized;
-
     typedef _Ty value_type;
-
     typedef value_type *pointer;
     typedef const value_type *const_pointer;
-
     typedef value_type& reference;
     typedef const value_type& const_reference;
-
     typedef std::size_t size_type;
     typedef std::ptrdiff_t difference_type;
-
     typedef std::true_type propagate_on_container_move_assignment;
     typedef std::true_type is_always_equal;
 

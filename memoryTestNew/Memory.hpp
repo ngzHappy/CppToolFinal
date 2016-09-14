@@ -1,5 +1,5 @@
-﻿#ifndef _NEW_MEMORY_HPP_CPP_
-#define _NEW_MEMORY_HPP_CPP_() 1
+﻿#ifndef _m_NEW_MEMORY_HPP_CPP_
+#define _m_NEW_MEMORY_HPP_CPP_() 1
 
 #include <memory>
 #include <utility>

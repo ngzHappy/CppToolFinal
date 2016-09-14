@@ -15,7 +15,8 @@ SOURCES += \
 
 HEADERS  += \
     Memory.hpp \
-    Allocator.hpp
+    Allocator.hpp \
+    MemoryStatic.hpp
 INCLUDEPATH += $$PWD/memory_private
 
 include($$PWD/../CppTool.pri)
