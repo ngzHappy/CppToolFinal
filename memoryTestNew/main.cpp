@@ -48,6 +48,11 @@ inline std::size_t(&test_index())[test_size] {
 int main() {
 
     {
+        memory::constructStatic();
+        memory::constructStatic();
+    }
+
+    {
         using String=std::basic_string<
             char,
             std::char_traits<char>,
