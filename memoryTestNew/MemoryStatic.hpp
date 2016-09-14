@@ -15,12 +15,14 @@ the function must be called before any static/thread_local data not pod
 */
 inline void constructStatic() {
     if (__is_construct_static()) { return; }
-    static const bool _runonce_flag=[]() {
+    static const bool _run_once_flag=[]() {
         /*set your code here***********************/
         /******************************************/
         __set_construct_static();
         return __is_construct_static();
     }();
+    return;
+    (void)_run_once_flag;
 }
 
 }/*~memory*/

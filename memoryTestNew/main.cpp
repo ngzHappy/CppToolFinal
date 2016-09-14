@@ -1,6 +1,7 @@
 ﻿#include "Memory.hpp"
 #include<list>
 #include"Allocator.hpp"
+#include"MemoryStatic.hpp"
 //#include <allocator>
 
 class Test {

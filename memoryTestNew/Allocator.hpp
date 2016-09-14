@@ -97,8 +97,6 @@ public:
 
 };
 
-std::allocator<int> sdfsdfe;
-
 template<>
 class Allocator<void> {
 public:
@@ -148,3 +146,6 @@ constexpr inline bool operator!=(const Allocator<T>&,const Allocator<T>&) { retu
 }
 
 #endif
+
+
+
