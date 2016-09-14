@@ -25,9 +25,9 @@ namespace memory {
 class _EXPORT_MALLOC_FREE_IMPORT __memory__construct_static {
     friend void constructStatic();
 protected:
-    static bool __is_construct_static();
-    static void __set_construct_static();
-    static void __run_once(void(*)(void));
+    static bool __is_construct_static() noexcept(true);
+    static void __set_construct_static() noexcept(true);
+    static bool __run_once(void(*)(void)) noexcept(true);
 };
 
 }

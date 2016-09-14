@@ -296,17 +296,23 @@ void freePoolMemory() {
     return __cpp::__private::__memory::memory::freePoolMemory();
 }
 
-bool __memory__construct_static::__is_construct_static() { 
+bool __memory__construct_static::__is_construct_static() noexcept(true){
     return __cpp::__private::__memory::memory::_d_is_construct_static.load();
 }
 
-void __memory__construct_static::__set_construct_static() {
+void __memory__construct_static::__set_construct_static() noexcept(true){
     return __cpp::__private::__memory::memory::_d_is_construct_static.store(true);
 }
 
-void __memory__construct_static::__run_once(void(* arg)(void)) {
+bool __memory__construct_static::__run_once(void(* arg)(void)) noexcept(true){
     static std::once_flag _d_run_once_flag;
-    std::call_once(_d_run_once_flag,arg);
+    try{
+        std::call_once(_d_run_once_flag,arg);
+    }catch(...){
+        /*do nothing*/
+        return false;
+    }
+    return true;
 }
 
 }/*memory*/
