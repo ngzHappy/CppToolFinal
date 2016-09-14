@@ -6,23 +6,18 @@
 
 namespace memory {
 
-_EXPORT_MALLOC_FREE_IMPORT bool __is_construct_static();
-_EXPORT_MALLOC_FREE_IMPORT void __set_construct_static();
-
 /*
 the function just call once
 the function must be called before any static/thread_local data not pod
 */
 inline void constructStatic() {
-    if (__is_construct_static()) { return; }
-    static const bool _run_once_flag=[]() {
+    if (__memory__construct_static::__is_construct_static()) { return; }
+    __memory__construct_static::__run_once([]() {
         /*set your code here***********************/
         /******************************************/
-        __set_construct_static();
-        return __is_construct_static();
-    }();
+        __memory__construct_static::__set_construct_static();
+    });
     return;
-    (void)_run_once_flag;
 }
 
 }/*~memory*/
