@@ -1,5 +1,7 @@
 ﻿#include "Memory.hpp"
 #include <atomic>
+#include <future>
+#include <thread>
 #include <boost/pool/pool.hpp>
 
 //#define _TEST_MEMORY_MALLOC_FREE_
