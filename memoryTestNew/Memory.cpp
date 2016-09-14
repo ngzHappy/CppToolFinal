@@ -161,7 +161,7 @@ void Middle::destructPools() {
     char * tmp=const_cast<char *>(pool_plain_data);
     auto * begin=reinterpret_cast<pool_type*>(tmp);
     auto * end=begin+middle_malloc_size;
-    for(;begin!=end;++begin){
+    for (; begin!=end; ++begin) {
         begin->~pool();
     }
 }
@@ -296,19 +296,21 @@ void freePoolMemory() {
     return __cpp::__private::__memory::memory::freePoolMemory();
 }
 
-bool __memory__construct_static::__is_construct_static() noexcept(true){
+bool __memory__construct_static::__is_construct_static() noexcept(true) {
     return __cpp::__private::__memory::memory::_d_is_construct_static.load();
 }
 
-void __memory__construct_static::__set_construct_static() noexcept(true){
+void __memory__construct_static::__set_construct_static() noexcept(true) {
     return __cpp::__private::__memory::memory::_d_is_construct_static.store(true);
 }
 
-bool __memory__construct_static::__run_once(void(* arg)(void)) noexcept(true){
-    static std::once_flag _d_run_once_flag;
-    try{
-        std::call_once(_d_run_once_flag,arg);
-    }catch(...){
+bool __memory__construct_static::__run_once(void(*arg)(void)) noexcept(true) {
+    /*it will not be deleted*/
+    static auto * _d_run_once_flag=new std::once_flag;
+    try {
+        std::call_once(*_d_run_once_flag,arg);
+    }
+    catch (...) {
         /*do nothing*/
         return false;
     }
