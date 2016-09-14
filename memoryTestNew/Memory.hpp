@@ -17,8 +17,9 @@ namespace memory {
 _EXPORT_MALLOC_FREE_IMPORT void * malloc(std::size_t);
 _EXPORT_MALLOC_FREE_IMPORT void free(void *);
 _EXPORT_MALLOC_FREE_IMPORT void freePoolMemory();
+inline void free(const void * arg) { memory::free(const_cast<void*>(arg)); }
 
-}
+}/*memory*/
 
 namespace memory {
 
@@ -30,7 +31,7 @@ protected:
     static bool __run_once(void(*)(void)) noexcept(true);
 };
 
-}
+}/*memory*/
 
 #endif
 

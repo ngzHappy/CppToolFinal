@@ -6,6 +6,8 @@
 
 class Test {
     int value=12;
+    double value_1=234;
+    float value_2=342;
 public:
     Test() {}
     ~Test() {}
@@ -45,12 +47,42 @@ inline std::size_t(&test_index())[test_size] {
 #include<vector>
 #include<string>
 
+#include"MakeShared.hpp"
+#include "MakeFunction.hpp"
 int main() {
+
+    {
+        int a={}; 
+        double b={}; 
+        float c={};
+
+        int a1={}; 
+        double b1={}; 
+        float c1={};
+
+        auto f= memory::make_function<double()>([a,b,c,a1,b1,c1]() {
+            auto x=a+b+c+a1+b1+c1;
+            return x;
+        });
+        f();
+    }
 
     {
         memory::constructStatic();
         memory::constructStatic();
     }
+
+    {
+        memory::make_shared<const Test>( );
+        enum TTX {
+            x=sizeof(Test)
+        };
+    }    
+
+    {
+        memory::make_shared<const int>();
+        memory::instance_shared<const double>(34.2);
+    } 
 
     {
         using String=std::basic_string<
@@ -228,6 +260,7 @@ int main() {
     memory::Allocator<double> b;
     a==b;
     system("pause");
+
 }
 
 
