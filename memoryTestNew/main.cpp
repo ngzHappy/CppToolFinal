@@ -54,6 +54,12 @@ inline std::size_t(&test_index())[test_size] {
 int main() {
       
     {
+
+        std::function<void(void)> xf(
+            std::allocator_arg,
+            memory::Allocator< int >{}
+        );
+
         int a1=1;
         double b1=2;
         float c1=3;
