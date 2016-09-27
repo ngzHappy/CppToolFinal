@@ -31,7 +31,8 @@ SUBDIRS += \
     appSetGetUtility \
     appClassMaker \
     appMemoryTest \
-    appMemoryTestNew
+    appMemoryTestNew \
+    boost_change_name
 
 
 
